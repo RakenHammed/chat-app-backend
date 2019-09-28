@@ -6,6 +6,7 @@ import logger from "morgan";
 import path from "path";
 
 import { indexRoutes } from "./routes/index";
+import { messageRoutes } from "./routes/messageRoutes";
 import { userRoutes } from "./routes/userRoutes";
 
 export const app: express.Application = express();
@@ -36,6 +37,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRoutes);
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/messages", messageRoutes);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
