@@ -120,8 +120,20 @@ export const login = async (req: Request, res: Response) => {
     if (dbUser) {
       const isMatch = await bcrypt.compare(password, dbUser.password);
       if (isMatch) {
-        const token = jwt.encode(dbUser, getJwtSecret());
-        res.status(201).json(token);
+        const user = {
+          firstName: dbUser.firstName,
+          lastName: dbUser.lastName,
+          email: dbUser.email,
+          password: dbUser.password,
+          id: dbUser.id,
+        };
+        const token = jwt.encode(user, getJwtSecret());
+        delete user.password;
+        const response = {
+          token,
+          user,
+        };
+        res.status(201).json(response);
       } else {
         throw new Error("Wrong Password !");
       }
@@ -131,7 +143,7 @@ export const login = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       error: error,
-      message: "Error when login.",
+      message: "Error when login. " + error.message,
     });
   }
 };

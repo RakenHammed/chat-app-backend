@@ -21,7 +21,7 @@ indexRoutes.use("/", async (req, res, next) => {
         }
         const token = authorization.substring(7);
         const decoded = jwt.decode(token, getJwtSecret());
-        const user = await User.findOne({ _id: decoded._id });
+        const user = await User.findOne({ _id: decoded.id });
         if (!user) {
           throw new Error("unauthorized");
         }
