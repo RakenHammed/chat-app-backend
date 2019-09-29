@@ -29,6 +29,25 @@ db.once("open", () => {
   // we're connected!
 });
 
+app.use((req, res, next) => {
+  // to delete
+  // http://stackoverflow.com/questions/9310112/why-am-i-seeing-an-origin-is-not-allowed-by-access-control-allow-origin-error
+  // http://stackoverflow.com/questions/23469747/access-control-origin-not-allowed
+  // http://stackoverflow.com/questions/30224928/setting-access-control-allow-origin-doesnt-work-with-ajax-node-js
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, Cache-Control, X-Requested-With");
+  res.setHeader("Access-Control-Expose-Headers", "X-Total-Count");
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "sameorigin");
+  res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
+  res.setHeader("X-XSS-Protection", "1; mode=block");
+  // res.setHeader("Content-Security-Policy", "default-src 'self'; style-src 'self' https://cdnjs.cloudflare.com");
+  // res.setHeader("Access-Control-Allow-Credentials", true);
+  // end of to delete
+  next();
+});
+
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
