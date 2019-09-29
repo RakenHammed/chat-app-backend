@@ -21,20 +21,20 @@ const MessageSchema: Schema = new Schema(
       type: String,
       maxlength: 140,
     },
-    senderId: [{
+    sender: {
       type: Schema.Types.ObjectId,
       ref: "User",
-    }],
+    },
     receivers: {
       type: [{
         receiverId: String,
         isRead: Boolean,
       }],
     },
-    conversationId: [{
+    conversation: {
       type: Schema.Types.ObjectId,
       ref: "Conversation",
-    }],
+    },
   },
   {
     timestamps: true,
