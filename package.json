@@ -2,9 +2,12 @@
   "name": "chat-backend",
   "version": "0.0.0",
   "private": true,
+  "main": "dist/bin/www.js",
   "scripts": {
-    "start": "tsc | node ./dist/bin/www",
-    "tsc": "tsc"
+    "start": "tsc | node ./dist/bin/www.js",
+    "tsc": "tsc",
+    "build": "tsc",
+    "postinstall": "npm run build"
   },
   "dependencies": {
     "@types/bcrypt": "^3.0.0",
