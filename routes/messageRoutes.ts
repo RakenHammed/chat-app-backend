@@ -4,9 +4,9 @@ import * as  messageController from "../controllers/messageController";
 export const messageRoutes = Router();
 
 /*
- * GET
+ * Post
  */
-messageRoutes.get("/getConversationMessages/:id", messageController.getConversationMessages);
+messageRoutes.post("/getConversationMessages", messageController.getConversationMessages);
 
 /*
  * POST
