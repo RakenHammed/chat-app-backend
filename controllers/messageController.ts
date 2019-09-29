@@ -12,17 +12,24 @@ import Message from "../models/Message";
  * messageController.addMessage()
  */
 export const getConversationMessages = async (req: Request, res: Response) => {
-  let conversationId: string = req.params.id;
   try {
-    if (!conversationId) {
+    const participants: string[] = req.body.participants;
+    let dbConversation = await Conversation.findOne({ participants: { $all: participants } });
+    if (!dbConversation) {
       const conversation = new Conversation({
         participants: req.body.participants,
       });
-      const dbConversation = await conversation.save();
-      conversationId = dbConversation.id;
+      dbConversation = await conversation.save();
+      res.status(201).json(dbConversation.id);
+    } else {
+      const conversationMessages = await Message.find({ conversation: dbConversation.id })
+      .populate("sender", "_id firstName lastName");
+      const response = {
+        conversationMessages,
+        conversationId: dbConversation.id,
+      };
+      res.status(201).json(response);
     }
-    const conversationMessages = await Message.find({ conversationId });
-    res.status(201).json(conversationMessages);
   } catch (error) {
     res.status(500).json({
       error: error,
@@ -35,16 +42,17 @@ export const getConversationMessages = async (req: Request, res: Response) => {
  * messageController.addMessage()
  */
 export const addMessage = async (req: Request, res: Response) => {
-  const conversationId: string = req.body.conversationId;
+  const messageObject = req.body.message;
+  const conversationId: string = messageObject.conversationId;
   let dbConversation: IConversation | null;
   try {
     dbConversation = await Conversation.findOne({ _id: conversationId });
     if (!dbConversation) { throw new Error("conversation does not exist"); }
     const message = new Message({
-      message: req.body.message,
-      senderId: req.user.id,
-      receivers: req.body.receiversIds.map((id: string) => ({ receiverId: id, isRead: false })),
-      conversationId: dbConversation.id,
+      message: messageObject.message,
+      sender: req.user.id,
+      receivers: messageObject.receiversIds.map((id: string) => ({ receiverId: id, isRead: false })),
+      conversation: dbConversation.id,
     });
     await message.save();
     res.sendStatus(204);
