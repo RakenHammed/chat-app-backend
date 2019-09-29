@@ -6,6 +6,9 @@ import { getJwtSecret } from "../services/JwtService";
 export const indexRoutes = Router();
 
 indexRoutes.use("/", async (req, res, next) => {
+  if (req.method === "OPTIONS") {
+    return next();
+  }
   const authorization = req.headers.authorization;
   if (
     !req.url.startsWith("/api/v1/users/login")
