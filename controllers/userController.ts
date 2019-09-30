@@ -56,7 +56,8 @@ export const signup = async (req: Request, res: Response) => {
       lastName: req.body.lastName,
     });
     const dbUser = await user.save();
-    res.status(201).json(dbUser);
+    const response = encodeUserWithJwt(dbUser);
+    res.status(201).json(response);
   } catch (err) {
     res.status(500).json({
       error: err,
@@ -120,19 +121,7 @@ export const login = async (req: Request, res: Response) => {
     if (dbUser) {
       const isMatch = await bcrypt.compare(password, dbUser.password);
       if (isMatch) {
-        const user = {
-          firstName: dbUser.firstName,
-          lastName: dbUser.lastName,
-          email: dbUser.email,
-          password: dbUser.password,
-          id: dbUser.id,
-        };
-        const token = jwt.encode(user, getJwtSecret());
-        delete user.password;
-        const response = {
-          token,
-          user,
-        };
+        const response = encodeUserWithJwt(dbUser);
         res.status(201).json(response);
       } else {
         throw new Error("Wrong Password !");
@@ -172,3 +161,20 @@ const hashedPassword = async (password: string): Promise<string> => {
     throw new Error(error);
   }
 };
+function encodeUserWithJwt(dbUser: import("/home/raken/chat/models/User").IUser) {
+  const user = {
+    firstName: dbUser.firstName,
+    lastName: dbUser.lastName,
+    email: dbUser.email,
+    password: dbUser.password,
+    id: dbUser.id,
+  };
+  const token = jwt.encode(user, getJwtSecret());
+  delete user.password;
+  const response = {
+    token,
+    user,
+  };
+  return response;
+}
+
