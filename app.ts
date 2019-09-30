@@ -12,8 +12,11 @@ import { userRoutes } from "./routes/userRoutes";
 export const app: express.Application = express();
 
 // connect to database
+const dbUrl = "mongodb+srv://user:user@cluster0-lcif9.mongodb.net/test?retryWrites=true&w=majority";
+// const dbUrl = "mongodb://localhost/chat-app";
+
 mongoose.connect(
-  "mongodb://localhost/chat-app",
+  dbUrl,
   {
     useUnifiedTopology: true,
     useNewUrlParser: true,
