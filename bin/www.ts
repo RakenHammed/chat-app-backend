@@ -5,7 +5,10 @@
  */
 import debug from "debug";
 import http from "http";
+import socketIo from "socket.io";
+
 import { app } from "../app";
+import { connectToConversationSocket } from "../config/connectToConversationSocket";
 
 /**
  * Get port from environment and store in Express.
@@ -18,7 +21,9 @@ app.set("port", port);
  * Create HTTP server.
  */
 
-const server = http.createServer(app);
+export const server = http.createServer(app);
+const io: SocketIO.Server = socketIo(server);
+connectToConversationSocket(io);
 
 /**
  * Listen on provided port, on all network interfaces.
