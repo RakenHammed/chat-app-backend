@@ -2,7 +2,7 @@ import bcrypt = require("bcrypt");
 import jwt = require("jwt-simple");
 
 import { Request, Response } from "express";
-import User from "../models/User";
+import User, { IUser } from "../models/User";
 import { getJwtSecret } from "../services/JwtService";
 
 /**
@@ -161,7 +161,8 @@ const hashedPassword = async (password: string): Promise<string> => {
     throw new Error(error);
   }
 };
-function encodeUserWithJwt(dbUser: import("/home/raken/chat/models/User").IUser) {
+
+function encodeUserWithJwt(dbUser: IUser) {
   const user = {
     firstName: dbUser.firstName,
     lastName: dbUser.lastName,
@@ -177,4 +178,3 @@ function encodeUserWithJwt(dbUser: import("/home/raken/chat/models/User").IUser)
   };
   return response;
 }
-
