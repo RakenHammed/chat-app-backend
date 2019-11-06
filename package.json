@@ -24,7 +24,7 @@
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "jwt-simple": "^0.5.6",
-    "mongoose": "^5.7.1",
+    "mongoose": "^5.7.5",
     "mongoose-delete": "^0.5.1",
     "morgan": "~1.9.1",
     "pug": "^2.0.4",
