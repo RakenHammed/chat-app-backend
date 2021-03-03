@@ -27,7 +27,7 @@
     "mongoose": "^5.7.1",
     "mongoose-delete": "^0.5.1",
     "morgan": "~1.9.1",
-    "pug": "^2.0.4",
+    "pug": "^3.0.1",
     "socket.io": "^2.3.0",
     "tslint": "^5.20.0",
     "typescript": "^3.6.3",
